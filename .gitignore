@@ -1,0 +1,31 @@
+# Composer dependencies
+/vendor/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+/logs/
+/storage/logs/
+
+# Cache / temp files
+/cache/
+/tmp/
+/storage/cache/
+.phpunit.cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files - optional
+.vscode/
+.idea/
+
+# Local database files - only if you use SQLite locally
+/database/*.sqlite
+/database/*.sqlite3
+/database/*.db
