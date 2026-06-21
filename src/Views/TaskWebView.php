@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Taskmaster\Views;
 
 use Taskmaster\Models\Task;
+use Taskmaster\Enums\TaskStatus;
 
 final class TaskWebView
 {
@@ -202,6 +203,22 @@ final class TaskWebView
                     background-color: #fff8e1;
                     color: #f57f17;
                 }
+                .m-tag.is-in-progress {
+                    background-color: #e3f2fd;
+                    color: #0d47a1;
+                }
+                .m-tag.is-cancelled {
+                    background-color: #ffebee;
+                    color: #c62828;
+                }
+                .m-tag.is-on-hold {
+                    background-color: #efebe9;
+                    color: #4e342e;
+                }
+                .m-tag.is-on-queue {
+                    background-color: #eceff1;
+                    color: #37474f;
+                }
 
                 /* Empty state */
                 .empty-state {
@@ -265,8 +282,37 @@ final class TaskWebView
                     <div class="task-grid">
                         <?php foreach ($tasks as $task): ?>
                             <?php 
-                                $statusClass = $task->status->value === 'completed' ? 'is-completed' : 'is-pending';
-                                $statusIcon = $task->status->value === 'completed' ? 'fa-circle-check' : 'fa-clock';
+                                // Map task status to CSS class
+                                $statusClass = 'is-pending';
+                                $statusIcon = 'fa-clock';
+                                
+                                switch ($task->status->value) {
+                                    case 'completed':
+                                        $statusClass = 'is-completed';
+                                        $statusIcon = 'fa-circle-check';
+                                        break;
+                                    case 'in_progress':
+                                        $statusClass = 'is-in-progress';
+                                        $statusIcon = 'fa-spinner fa-spin-pulse';
+                                        break;
+                                    case 'cancelled':
+                                        $statusClass = 'is-cancelled';
+                                        $statusIcon = 'fa-circle-xmark';
+                                        break;
+                                    case 'on_hold':
+                                        $statusClass = 'is-on-hold';
+                                        $statusIcon = 'fa-circle-pause';
+                                        break;
+                                    case 'on_queue':
+                                        $statusClass = 'is-on-queue';
+                                        $statusIcon = 'fa-list-ol';
+                                        break;
+                                    case 'pending':
+                                    default:
+                                        $statusClass = 'is-pending';
+                                        $statusIcon = 'fa-clock';
+                                        break;
+                                }
                             ?>
                             <div class="material-card">
                                 <div>
@@ -274,7 +320,7 @@ final class TaskWebView
                                         <h3 class="card-title"><?= htmlspecialchars($task->title) ?></h3>
                                         <span class="m-tag <?= $statusClass ?>">
                                             <span class="icon" style="margin-right: 0.25rem;"><i class="fa-solid <?= $statusIcon ?>"></i></span>
-                                            <?= htmlspecialchars(ucfirst($task->status->value)) ?>
+                                            <?= htmlspecialchars(ucwords(str_replace('_', ' ', $task->status->value))) ?>
                                         </span>
                                     </div>
                                     <p class="card-desc"><?= htmlspecialchars($task->description ?? 'No description provided.') ?></p>
@@ -497,8 +543,11 @@ final class TaskWebView
                             <div class="form-group">
                                 <label class="form-label">Status</label>
                                 <select class="form-select" name="status">
-                                    <option value="pending">Pending</option>
-                                    <option value="completed">Completed</option>
+                                    <?php foreach (TaskStatus::cases() as $status): ?>
+                                        <option value="<?= htmlspecialchars($status->value) ?>">
+                                            <?= htmlspecialchars(ucwords(str_replace('_', ' ', $status->value))) ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -710,12 +759,11 @@ final class TaskWebView
                             <div class="form-group">
                                 <label class="form-label">Status</label>
                                 <select class="form-select" name="status">
-                                    <option value="pending" <?= $task->status->value === 'pending' ? 'selected' : '' ?>>
-                                        Pending
-                                    </option>
-                                    <option value="completed" <?= $task->status->value === 'completed' ? 'selected' : '' ?>>
-                                        Completed
-                                    </option>
+                                    <?php foreach (TaskStatus::cases() as $status): ?>
+                                        <option value="<?= htmlspecialchars($status->value) ?>" <?= $task->status === $status ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars(ucwords(str_replace('_', ' ', $status->value))) ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="form-group">
