@@ -1,6 +1,6 @@
-package com.taskmaster.repository;
+package io.lemadane.taskmaster.repository;
 
-import com.taskmaster.model.Task;
+import io.lemadane.taskmaster.model.Task;
 import io.succinct.recordmaster.RecordDatabase;
 import io.succinct.recordmaster.RecordTable;
 import org.springframework.stereotype.Repository;

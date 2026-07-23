@@ -39,7 +39,7 @@ TASKMASTER
 │   └── taskmaster.db                  # RecordMaster database folder
 ├── src/
 │   ├── main/
-│   │   ├── java/com/taskmaster/
+│   │   ├── java/io/lemadane/taskmaster/
 │   │   │   ├── config/
 │   │   │   │   └── RecordMasterConfig.java   # RecordMaster database setup
 │   │   │   ├── controller/

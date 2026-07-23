@@ -1,4 +1,4 @@
-package com.taskmaster.config;
+package io.lemadane.taskmaster.config;
 
 import io.succinct.recordmaster.RecordDatabase;
 import org.springframework.beans.factory.annotation.Value;

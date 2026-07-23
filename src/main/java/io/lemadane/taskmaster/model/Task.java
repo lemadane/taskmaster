@@ -1,4 +1,4 @@
-package com.taskmaster.model;
+package io.lemadane.taskmaster.model;
 
 import io.succinct.recordmaster.annotations.Id;
 import io.succinct.recordmaster.annotations.Index;

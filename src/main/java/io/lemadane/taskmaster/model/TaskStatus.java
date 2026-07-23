@@ -1,4 +1,4 @@
-package com.taskmaster.model;
+package io.lemadane.taskmaster.model;
 
 public enum TaskStatus {
     PENDING("pending", "Pending"),

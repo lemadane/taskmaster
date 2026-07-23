@@ -1,8 +1,8 @@
-package com.taskmaster.service;
+package io.lemadane.taskmaster.service;
 
-import com.taskmaster.model.Task;
-import com.taskmaster.model.TaskStatus;
-import com.taskmaster.repository.TaskRepository;
+import io.lemadane.taskmaster.model.Task;
+import io.lemadane.taskmaster.model.TaskStatus;
+import io.lemadane.taskmaster.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;

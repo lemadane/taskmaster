@@ -1,4 +1,4 @@
-package com.taskmaster.controller;
+package io.lemadane.taskmaster.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

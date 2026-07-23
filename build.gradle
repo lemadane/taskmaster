@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group = 'com.taskmaster'
+group = 'io.lemadane.taskmaster'
 version = '0.0.1-SNAPSHOT'
 
 java {

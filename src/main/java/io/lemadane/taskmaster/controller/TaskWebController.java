@@ -1,8 +1,8 @@
-package com.taskmaster.controller;
+package io.lemadane.taskmaster.controller;
 
-import com.taskmaster.model.Task;
-import com.taskmaster.model.TaskStatus;
-import com.taskmaster.service.TaskService;
+import io.lemadane.taskmaster.model.Task;
+import io.lemadane.taskmaster.model.TaskStatus;
+import io.lemadane.taskmaster.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
