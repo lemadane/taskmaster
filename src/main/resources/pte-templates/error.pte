@@ -1,0 +1,22 @@
+|layout layouts/main|
+
+|section title|Error - Taskmaster|/section|
+
+|section content|
+<div style="max-width: 600px; margin: 3rem auto; padding: 2rem;">
+    <div class="m-box" style="border-color: #b3261e; padding: 2.5rem; text-align: center; border-radius: 12px; border-style: solid; border-width: 1px; background-color: #fff;">
+        <span class="icon" style="font-size: 3.5rem; color: #b3261e; margin-bottom: 1.5rem; display: block;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </span>
+        <h1 class="form-title" style="color: #b3261e; margin-bottom: 1rem; font-size: 1.75rem; font-weight: 500;">Something went wrong</h1>
+        <p style="color: #49454f; margin-bottom: 2rem; font-size: 1rem;">
+            An unexpected error occurred while processing your request. Please try again or return to your tasks list.
+        </p>
+        <div style="display: flex; justify-content: center;">
+            <a class="btn-filled" href="/tasks" style="text-decoration: none;">
+                <span>Back to Tasks</span>
+            </a>
+        </div>
+    </div>
+</div>
+|/section|

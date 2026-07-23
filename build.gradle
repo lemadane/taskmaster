@@ -23,7 +23,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     
     // Piped Template Engine Spring Boot Starter (published locally)
-    implementation 'com.github.lemadane:piped-template-engine-spring-boot-starter:0.1.0'
+    implementation 'com.github.lemadane:piped-template-engine-spring-boot-starter:0.1.1'
     
     // RecordMaster core database (published locally)
     implementation 'io.succinct.recordmaster:recordmaster-core:1.0.0'

@@ -339,7 +339,7 @@
             window.dispatchEvent(new CustomEvent('show-confirm', {
                 detail: {
                     title: 'Delete Task',
-                    message: evt.detail.question || 'Are you sure you want to delete this task?',
+                    message: evt.detail.question ? evt.detail.question : 'Are you sure you want to delete this task?',
                     confirm: function() {
                         evt.detail.issueRequest(true); // Proceed with the HTMX request
                     }
