@@ -1,295 +1,155 @@
 # Taskmaster
 
-Taskmaster is a simple PHP task management project built for learning modern PHP project structure, routing, SQLite, repositories, services, controllers, and basic MVC/API design.
+Taskmaster is a modern, high-performance task management web application built as a native **Java 21** application utilizing **Spring Boot MVC**, **Virtual Threads**, **HTMX**, **AlpineJS**, **Piped Template Engine**, and **BulmaCSS** with custom Material Design aesthetics.
+
+It utilizes the custom **RecordMaster** database as its transactional storage engine.
+
+---
 
 ## Features
 
-* Create tasks
-* List tasks
-* View a single task
-* Update tasks
-* Patch tasks partially
-* Soft delete tasks using a `purged` column
-* SQLite database
-* Composer autoloading
-* Basic layered structure:
+* **Virtual Threads Enabled**: Native configuration for low-overhead concurrency on standard Web request handling.
+* **Modern Web UI**: Built with BulmaCSS + custom Material Theme tokens for a stunning visual layout.
+* **HTMX Interactivity**: Dynamic actions (like soft-deletions) without full page reloads.
+* **Piped Template Engine**: Custom templating layout (`|layout|`, `|section|`, `|each|`, `|if|`) for view presentation.
+* **RecordMaster Database**: Leverages transactional, document/record-based storage (`db.transaction(tx -> ...)`).
+* **Robust CRUD**:
+  - Create tasks with due dates, description, and custom statuses.
+  - List and sort tasks dynamically (filtering out soft-deleted tasks).
+  - Modify tasks via edit forms.
+  - Soft delete tasks dynamically (sets `purged` status to `true` in DB).
 
-  * Controller
-  * Service
-  * Repository
-  * Model
-  * View/Response
+---
 
 ## Tech Stack
 
-* PHP 8.1+
-* Composer
-* SQLite
-* PDO
+* **Language**: Java 21
+* **Framework**: Spring Boot 3.3.1 (Web MVC)
+* **Template Engine**: Piped Template Engine (Spring Boot Starter)
+* **Database**: RecordMaster
+* **Frontend**: HTMX, AlpineJS, BulmaCSS (v1.0.0 CDN), FontAwesome (v6.4.0)
+
+---
 
 ## Project Structure
 
 ```text
 TASKMASTER
-├── database/
-│   └── taskmaster.sqlite
-├── public/
+├── db/
+│   └── taskmaster.db                  # RecordMaster database folder
 ├── src/
-│   ├── Controllers/
-│   │   └── TaskController.php
-│   ├── Core/
-│   │   ├── Database.php
-│   │   ├── Request.php
-│   │   ├── Response.php
-│   │   └── Router.php
-│   ├── Enums/
-│   │   └── TaskStatus.php
-│   ├── Models/
-│   │   └── Task.php
-│   ├── Repositories/
-│   │   └── TaskRepository.php
-│   ├── Services/
-│   │   └── TaskService.php
-│   ├── Utilities/
-│   │   └── functions.php
-│   └── Views/
-│       └── TaskView.php
-├── vendor/
-├── .gitignore
-├── composer.json
-├── composer.lock
+│   ├── main/
+│   │   ├── java/com/taskmaster/
+│   │   │   ├── config/
+│   │   │   │   └── RecordMasterConfig.java   # RecordMaster database setup
+│   │   │   ├── controller/
+│   │   │   │   ├── ApiResponse.java          # Wrapper JSON response DTO
+│   │   │   │   ├── TaskApiController.java     # JSON endpoints
+│   │   │   │   ├── TaskRequest.java          # JSON payload request DTO
+│   │   │   │   └── TaskWebController.java     # HTML Web MVC controller
+│   │   │   ├── model/
+│   │   │   │   ├── Task.java                 # Task record model
+│   │   │   │   └── TaskStatus.java           # Task status enum
+│   │   │   ├── repository/
+│   │   │   │   └── TaskRepository.java       # RecordMaster repository
+│   │   │   ├── service/
+│   │   │   │   └── TaskService.java          # Core validations and transactions
+│   │   │   └── TaskmasterApplication.java    # Spring Boot starter class
+│   │   └── resources/
+│   │       ├── pte-templates/
+│   │       │   ├── layouts/
+│   │       │   │   └── main.pte              # Main layout template (CSS, scripts)
+│   │       │   ├── error/
+│   │       │   │   └── 404.pte               # Page/task not found template
+│   │       │   └── tasks/
+│   │       │       ├── list.pte              # Task list view with HTMX
+│   │       │       ├── create.pte            # Create form view
+│   │       │       ├── edit.pte              # Edit form view
+│   │       │       └── validation_error.pte  # Input validation error view
+│   │       └── application.properties        # App properties (Virtual threads config)
+│   └── test/                                 # Unit/Integration tests
+├── build.gradle                              # Gradle build configuration
+├── settings.gradle                           # Gradle settings configuration
 └── README.md
 ```
 
+---
+
 ## Requirements
 
-Make sure PHP, Composer, and SQLite support are installed.
+Ensure you have **Java 21 JDK** installed:
 
 ```bash
-php -v
-composer -V
-php -m | grep -i sqlite
+java -version
 ```
 
-On Ubuntu, you may need:
+---
+
+## Installation & Build
+
+Build the project locally using Gradle:
 
 ```bash
-sudo apt update
-sudo apt install php php-sqlite3 sqlite3 composer
+./gradlew clean compileJava
 ```
 
-## Installation
+---
 
-Clone the project:
+## Running the Application
+
+To run the embedded Tomcat server on port `8000`:
 
 ```bash
-git clone <your-repository-url>
-cd taskmaster
+./gradlew bootRun
 ```
 
-Install dependencies:
-
-```bash
-composer install
-```
-
-Generate Composer autoload files:
-
-```bash
-composer dump-autoload
-```
-
-## Running the Project
-
-Start the PHP built-in server:
-
-```bash
-php -S localhost:8000 -t public
-```
-
-Open in your browser:
-
+Once running, access the web interface in your browser:
 ```text
-http://localhost:8000
+http://localhost:8000/tasks
 ```
 
-## Database
-
-This project uses SQLite.
-
-Database file:
-
-```text
-database/taskmaster.sqlite
-```
-
-The `tasks` table should include fields similar to:
-
-```sql
-CREATE TABLE tasks (
-    id TEXT PRIMARY KEY,
-    title TEXT NOT NULL,
-    description TEXT NULL,
-    status TEXT NOT NULL DEFAULT 'pending',
-    due_date TEXT NULL,
-    purged INTEGER NOT NULL DEFAULT 0,
-    created_at TEXT NOT NULL,
-    updated_at TEXT NOT NULL
-);
-```
-
-SQLite does not have a native boolean type, so this project stores booleans as integers:
-
-```text
-false = 0
-true  = 1
-```
-
-Soft-deleted tasks are marked as:
-
-```sql
-purged = 1
-```
-
-Normal task queries should only show:
-
-```sql
-purged = 0
-```
+---
 
 ## Example API Endpoints
 
-Depending on your current router setup, the project may support routes similar to:
+The API is fully compliant with the previous API endpoints:
 
 ```text
-GET     /tasks
-GET     /tasks/{id}
-POST    /tasks
-PUT     /tasks/{id}
-PATCH   /tasks/{id}
-DELETE  /tasks/{id}
+GET     /api/tasks/check       # Heartbeat/status checks
+GET     /api/tasks             # Fetch all non-purged tasks
+GET     /api/tasks/{id}        # Fetch a single task
+POST    /api/tasks             # Create a new task (JSON)
+PUT     /api/tasks/{id}        # Update a task completely (JSON)
+PATCH   /api/tasks/{id}        # Partially update task parameters (JSON)
+DELETE  /api/tasks/{id}        # Soft delete a task
 ```
 
-For MVC-style pages, routes may look like:
-
-```text
-GET   /tasks
-GET   /tasks/create
-POST  /tasks
-GET   /tasks/{id}/edit
-POST  /tasks/{id}/update
-POST  /tasks/{id}/delete
-```
-
-## Example Task JSON
-
-```json
-{
-  "title": "Learn PHP MVC",
-  "description": "Practice building a small PHP project without a framework.",
-  "status": "pending",
-  "due_date": "2026-06-30"
-}
-```
-
-## Task Status
-
-Task statuses are defined using a PHP enum:
-
-```php
-enum TaskStatus: string
-{
-    case Pending = 'pending';
-    case Completed = 'completed';
-}
-```
-
-## Soft Delete Behavior
-
-Tasks are not physically deleted from the database.
-
-Instead of:
-
-```sql
-DELETE FROM tasks WHERE id = :id
-```
-
-the project uses:
-
-```sql
-UPDATE tasks
-SET purged = 1
-WHERE id = :id
-```
-
-This keeps the task record in the database while hiding it from normal GET requests.
-
-## Security Notes
-
-The repository uses prepared statements through PDO:
-
-```php
-$statement = $this->pdo->prepare("
-    SELECT * FROM tasks
-    WHERE id = :id
-");
-
-$statement->execute([
-    'id' => $id,
-]);
-```
-
-This helps prevent SQL injection because user input is passed separately from the SQL string.
-
-Avoid writing SQL like this:
-
-```php
-$this->pdo->query("SELECT * FROM tasks WHERE id = '$id'");
-```
+---
 
 ## Development Notes
 
-Useful commands:
+### 1. Spring Boot & Gradle Compatibility
+This project uses **Gradle 9.6.1**. To avoid plugin compatibility errors with Gradle's new `CopyProcessingSpec` API during jar building, run the application directly using the `./gradlew bootRun` task.
 
-```bash
-composer dump-autoload
-php -S localhost:8000 -t public
+### 2. RecordMaster Metamodel
+The project compiles with `recordmaster-processor` which generates record metadata. Fields are filtered and queried through transactional blocks:
+```java
+db.transaction(tx -> {
+    RecordTable<String, Task> table = tx.table(Task.class);
+    // CRUD operations...
+});
 ```
 
-Check PHP syntax:
-
-```bash
-find src public -name "*.php" -print0 | xargs -0 -n1 php -l
+### 3. HTMX Actions
+HTML interactions are enriched via HTMX attributes. For instance, soft-deletions on task cards use asynchronous POST requests with automatic element swap:
+```html
+<button 
+    hx-post="/tasks/|task.id|/delete"
+    hx-target="#task-|task.id|"
+    hx-swap="outerHTML"
+    hx-confirm="Are you sure you want to delete this task?"
+>
+    Delete
+</button>
 ```
-
-Check Git status:
-
-```bash
-git status
-```
-
-## Git Ignore
-
-Recommended `.gitignore` entries:
-
-```gitignore
-/vendor/
-.env
-.env.*
-!.env.example
-
-/database/*.sqlite
-/database/*.sqlite3
-/database/*.db
-
-.vscode/
-.idea/
-
-*.log
-.DS_Store
-Thumbs.db
-```
-
-## License
-
-This project is for learning purposes.
+The controller returns an empty `200 OK` response for HTMX requests, which removes the card element seamlessly without reload.

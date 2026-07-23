@@ -1,0 +1,21 @@
+|layout layouts/main|
+
+|section title|Validation Error|/section|
+
+|section content|
+<div class="m-box" style="max-width: 600px; margin: 3rem auto; border-color: #b3261e;">
+    <h1 class="form-title" style="color: #b3261e;">
+        <span class="icon mr-2" style="margin-right: 0.5rem;"><i class="fa-solid fa-circle-exclamation"></i></span>Validation Error
+    </h1>
+
+    <div class="notification is-danger is-light" style="background-color: #ffebee; color: #c62828; padding: 1.25rem; border-radius: 8px; margin-bottom: 2rem;">
+        |errorMessage|
+    </div>
+
+    <div class="actions-group">
+        <a href="|backUrl|" class="btn-filled" style="background-color: #b3261e !important;">
+            <span class="icon" style="margin-right: 0.5rem;"><i class="fa-solid fa-arrow-left"></i></span> Go Back
+        </a>
+    </div>
+</div>
+|/section|

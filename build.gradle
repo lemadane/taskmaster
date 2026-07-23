@@ -1,0 +1,38 @@
+plugins {
+    id 'org.springframework.boot' version '3.3.1'
+    id 'io.spring.dependency-management' version '1.1.5'
+    id 'java'
+}
+
+group = 'com.taskmaster'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    
+    // Piped Template Engine Spring Boot Starter (published locally)
+    implementation 'com.github.lemadane:piped-template-engine-spring-boot-starter:0.1.0'
+    
+    // RecordMaster core database (published locally)
+    implementation 'io.succinct.recordmaster:recordmaster-core:1.0.0'
+    annotationProcessor 'io.succinct.recordmaster:recordmaster-core:1.0.0'
+    annotationProcessor 'io.succinct.recordmaster:recordmaster-processor:1.0.0'
+    
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

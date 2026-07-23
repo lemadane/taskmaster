@@ -1,31 +1,38 @@
-# Composer dependencies
-/vendor/
+# Gradle and Build Outputs
+.gradle/
+build/
+bin/
+out/
 
-# Environment / secrets
+# Java Class Files & Packages
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+
+# Database / Storage
+/db/
+*.db
+/database/*.sqlite
+/database/*.sqlite3
+
+# Composer/PHP backup
+/vendor/
 .env
 .env.*
 !.env.example
-
-# Logs
 *.log
 /logs/
-/storage/logs/
 
-# Cache / temp files
-/cache/
-/tmp/
-/storage/cache/
-.phpunit.cache/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# IDE files - optional
+# IDE / System
 .vscode/
 .idea/
-
-# Local database files - only if you use SQLite locally
-/database/*.sqlite
-/database/*.sqlite3
-/database/*.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
